@@ -56,7 +56,10 @@ public class SceneFactory {
 
         return new Scene(layout, 800, 600);
     }
-    private static Scene Passwor
+    private static Scene Password(){
+        VBox layout2 = new VBox(25);
+        return new Scene(layout2, 800, 600);
+    }
 
 
 
