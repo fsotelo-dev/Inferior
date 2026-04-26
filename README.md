@@ -27,7 +27,7 @@ Inferior is a Java desktop app where users can sign in, browse posts from others
 
 - User login & sign up
 - Public post feed
-- Direct messaging
+- Comments
 - Role-based interface — some users see something different on sign in
 
 ---
