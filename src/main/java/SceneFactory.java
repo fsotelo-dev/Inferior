@@ -26,7 +26,7 @@ public class SceneFactory {
             case LOGIN -> buildLoginScene(stage);
             case SIGNUP -> buildSIGNUPScene(stage);
             case MAIN -> buildMAINScene(stage);
-            case Profile -> buildProfilePage(stage);
+            case PROFILE -> buildProfilePage(stage);
         };
     }
 
@@ -119,7 +119,7 @@ public class SceneFactory {
 
         profileBtn.setMaxWidth(Double.MAX_VALUE);
         profileBtn.setOnAction(e ->
-                stage.setScene(create(SceneType.Profile, stage)));
+                stage.setScene(create(SceneType.PROFILE, stage)));
 
         settingsBtn.setMaxWidth(Double.MAX_VALUE);
 
