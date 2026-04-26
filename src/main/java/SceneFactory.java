@@ -47,10 +47,16 @@ public class SceneFactory {
                 stage.setScene((create(SceneType.MAIN, stage)))
         );
         GridPane textLayout = new GridPane();
+//        textLayout.add(new TextField("Username"), 0, 0));
+//
+//        textLayout.add(new TextField("Password"),0, 1);
+//        textLayout.setAlignment(Pos.CENTER);
         TextField usernameField = new TextField();
         usernameField.setPromptText("Username");
+
         TextField passwordField = new PasswordField();
         passwordField.setPromptText("Password");
+
         textLayout.add(usernameField, 0, 0);
         textLayout.add(passwordField, 0, 1);
         textLayout.setAlignment(Pos.CENTER);
@@ -161,4 +167,20 @@ public class SceneFactory {
         return new Scene(layout, 800, 600);
     }
 
+        GridPane textLayout = new GridPane();
+        TextField usernameField = new TextField();
+        usernameField.setPromptText("Username");
+        TextField passwordField = new PasswordField();
+        passwordField.setPromptText("Password");
+        textLayout.add(usernameField, 0, 0);
+        textLayout.add(passwordField, 0, 1);
+        textLayout.setAlignment(Pos.CENTER);
+//        textLayout.add(new TextField("Username"), 0, 0);
+//        textLayout.add(new TextField("Password"),0, 1);
+//        textLayout.setAlignment(Pos.CENTER);
+
+        VBox layout = new VBox(25, title, signUp, textLayout, signupButton);
+        layout.setAlignment(Pos.CENTER);
+        return new Scene(layout, 800, 600);
+    }
 }
