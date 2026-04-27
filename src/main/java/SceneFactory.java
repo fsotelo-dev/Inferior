@@ -109,6 +109,7 @@ public class SceneFactory {
         VBox sidebar = new VBox();
         sidebar.setPrefWidth(200);
         sidebar.setStyle("-fx-background-color: #1a1a1a; -fx-border-color: #2a2a2a; -fx-border-width: 0 1 0 0;");
+
         // SideBar Buttons
         Button homeBtn     = new Button("🏠  Home");
         Button profileBtn  = new Button("👤  Profile");
