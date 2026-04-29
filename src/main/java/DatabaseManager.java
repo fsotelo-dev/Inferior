@@ -57,7 +57,7 @@ public class DatabaseManager {
         String postTable = """
             CREATE TABLE IF NOT EXISTS posts (
                 id            INTEGER PRIMARY KEY AUTOINCREMENT,
-                user_id       INTEGER NOT NULL            
+                user_id       INTEGER NOT NULL,
                 username      TEXT    NOT NULL,
                 title         TEXT    NOT NULL,
                 body          TEXT    NOT NULL,
@@ -72,11 +72,14 @@ public class DatabaseManager {
             System.err.println(" postTables failed : " + e . getMessage () ) ;
         }
     }
-
-    public void insertItems(String name){
-        String sql = "INSERT INTO items (name) VALUES (?)";
+//changed item  to table name | column name to username and password bec neither can be null
+    public void insertItems(String name, String password){
+        String sql = "INSERT INTO users (username, password) VALUES (?, ?)";
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-            pstmt.setString(1, name); // bind parameter 1 to ’name’
+
+            pstmt.setString(1, name); // column// bind parameter 1 to ’name’
+            pstmt.setString(2, password);
+
             pstmt.executeUpdate();
         } catch (SQLException e) {
             System.err.println("insertItem failed: " + e.getMessage()) ;
@@ -86,7 +89,6 @@ public class DatabaseManager {
     public List<String> getAllItems() {
         List<String> items = new ArrayList<>();
         String sql = "SELECT name FROM items WHERE done = 0 ORDER BY created DESC";
-
 
         //Try wtih resources closes both Statement and ResultSet sutomatically
         try (Statement stmt = connection.createStatement();
