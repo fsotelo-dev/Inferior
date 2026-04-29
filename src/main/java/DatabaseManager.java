@@ -84,6 +84,7 @@ public class DatabaseManager {
         } catch (SQLException e) {
             System.err.println("insertItem failed: " + e.getMessage()) ;
         }
+
     }
 
     public List<String> getAllItems() {

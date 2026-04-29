@@ -104,6 +104,7 @@ public class SceneFactory{
         return new Scene(layout, 800, 600);
     }
 
+
 //    public static Scene buildProfilePage(Stage stage){
 //        Label title = new Label("Inferior");
 //        title.setStyle("-fx-text-fill: red; -fx-font-size: 50px; -fx-font-weight: bold;");

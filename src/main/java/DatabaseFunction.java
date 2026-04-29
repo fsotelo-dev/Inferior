@@ -67,6 +67,7 @@ public class DatabaseFunction {
         }
     }
 
+
     //ToDo: deleteUser(String )
 
     //delete method

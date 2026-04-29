@@ -25,4 +25,5 @@ public class Main extends Application{
     public void stop(){
         if(db != null) db.close(); //called when closing window.
     }
+
 }
