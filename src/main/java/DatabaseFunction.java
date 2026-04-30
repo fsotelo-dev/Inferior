@@ -84,4 +84,26 @@ public class DatabaseFunction {
             return false;
         }
     }
+
+    //Todo: make a check that returns true if a username and password exist in the database
+
+    public boolean userLogin(String username, String password) {
+        try{
+            String sql ="SELECT * FROM users WHERE username = ? AND password = ?";
+            PreparedStatement ps = connection.prepareStatement(sql);
+
+            ps.setString(1, username);
+            ps.setString(2, password);
+            ResultSet rs = ps.executeQuery();
+            if(rs.next()){
+                return true;
+            }else{
+                return false;
+            }
+        } catch(SQLException e) {
+            System.out.println("login failed" + e.getMessage());
+        }
+        return false;
+    }
+
 }
