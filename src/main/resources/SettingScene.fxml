@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+
+
+<VBox   xmlns="http://javafx.com/javafx"
+        xmlns:fx="http://javafx.com/fxml"
+        fx:controller="controllers.SettingController"
+        spacing = "20"
+        alignment = "TOP_CENTER"
+        prefHeight="400.0" prefWidth="600.0">
+        style = "-fx-padding: 30;">
+<!--Title of Scene-->
+        <Label text = "Settings"
+               style = "-fx-font-size: 28px; -fx-font-weight: bold;"/>
+<!-- Username section-->
+    <VBox spacing = "10" alignment="CENTER_LEFT">
+        <Label text = "Update Username"
+               style = "-fx-font-size: 16px; -fx-font-weight: bold;"/>
+                <!--username should be in settingContorller fields -->
+
+        <TextField fx:id="usernameField"
+                   promptText = "Enter new Username"
+                   prefWidth = "300"/>
+    </VBox>
+</VBox>
