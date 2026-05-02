@@ -19,7 +19,7 @@ import java.awt.*;
 
 public class SceneFactory{
 //    method is the public entry point method creates scene by SceneType in enum class
-    public static Scene create(SceneType type, Stage stage, DatabaseManager db){
+    public static Scene create(SceneType type, Stage stage){
         return switch(type){
             case LOGIN -> buildLoginScene(stage, db);
             case SIGNUP -> buildSIGNUPScene(stage, db);
@@ -28,8 +28,13 @@ public class SceneFactory{
             case SETTINGS -> buildSettingPage(stage, db);
         };
     }
-//can be more efficient with Db singleton
-    private static Scene buildLoginScene(Stage stage, DatabaseManager db){
+
+
+
+
+
+    private static Scene buildLoginScene(Stage stage){
+        DatabaseManager db = DatabaseManager.getInstance();
         Label title = new Label("Inferior");
         title.setStyle("-fx-text-fill: red; -fx-font-size: 50px; -fx-font-weight: bold;");
         title.setAlignment(Pos.TOP_CENTER);
@@ -54,7 +59,7 @@ public class SceneFactory{
         Button loginbutton = new Button( "      Log in     ");
         Button signinButton = new Button("      Sign up page    ");
         signinButton.setOnAction(e ->
-                stage.setScene(create(SceneType.SIGNUP, stage, db)));
+                stage.setScene(create(SceneType.SIGNUP, stage)));
 
         Label loginStatus = new Label();
         loginbutton.setOnAction(e -> {
@@ -70,7 +75,8 @@ public class SceneFactory{
             db.insertItems(usernameField.getText(), passwordField.getText());
             stage.setScene(create(SceneType.LOGIN, stage, db));
             if (loggedIn) {
-                stage.setScene((create(SceneType.MAIN, stage, db)));
+                SceneManager.getInstance().navigateTo(SceneType.MAIN);
+//                stage.setScene((create(SceneType.MAIN, stage)));
             }else{
                 loginStatus.setText("Incorrect username or password");
             }
@@ -86,7 +92,9 @@ public class SceneFactory{
 
         return new Scene(layout, 800, 600);
     }
-    public static Scene buildSIGNUPScene(Stage stage, DatabaseManager db){
+
+    public static Scene buildSIGNUPScene(Stage stage){
+        DatabaseManager db = DatabaseManager.getInstance();
         //Only gets called when user clicks on Sign Up with a new page
         Label title = new Label("Inferior");
         title.setStyle("-fx-text-fill: red; -fx-font-size: 50px; -fx-font-weight: bold;");
@@ -111,7 +119,9 @@ public class SceneFactory{
                 return;
             }
             db.insertItems(usernameField.getText(), passwordField.getText());
-            stage.setScene(create(SceneType.LOGIN, stage, db));
+
+            SceneManager.getInstance().navigateTo(SceneType.LOGIN);
+//            stage.setScene(create(SceneType.LOGIN, stage));
         });
         textLayout.add(usernameField, 0, 0);
         textLayout.add(passwordField, 0, 1);
@@ -120,7 +130,9 @@ public class SceneFactory{
 
         Button backTologinpage = new Button("Back to Login");
         backTologinpage.setOnAction(e->
-                stage.setScene(create(SceneType.LOGIN,stage, db)));
+
+                SceneManager.getInstance().navigateTo(SceneType.LOGIN));
+//                stage.setScene(create(SceneType.LOGIN,stage)));
         backTologinpage.setAlignment(Pos.BOTTOM_RIGHT);
 
         VBox layout = new VBox(25, title, signUp, textLayout, signupButton,backTologinpage);
