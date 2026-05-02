@@ -32,19 +32,20 @@ public class DatabaseFunction {
     //read method
     //find a user by their username
     public String getUserByUsername(String username) {
-        String sql = "SELECT * FROM users WHERE username = ?";
-        try{
-            PreparedStatement ps = connection.prepareStatement(sql);
-            ps.setString(1, username);
-            ResultSet rs = ps.executeQuery();
-            if(rs.next()) {
-                return "found: " + rs.getString("username");
+            String sql = "SELECT * FROM users WHERE username = ?";
+            try{
+                PreparedStatement ps = connection.prepareStatement(sql);
+                ps.setString(1, username);
+                ResultSet rs = ps.executeQuery();
+                if(rs.next()) {
+                    return "found: " + rs.getString("username");
+                }
+            } catch(SQLException e){
+                System.out.println("getUserByUsername failed to find: " + e.getMessage());
             }
-        } catch(SQLException e){
-            System.out.println("getUserByUsername failed to find: " + e.getMessage());
+            return null;
         }
-        return null;
-    }
+
 
     //ToDo: updatePassword(String , String )
 
@@ -104,6 +105,19 @@ public class DatabaseFunction {
             System.out.println("login failed" + e.getMessage());
         }
         return false;
+    }
+    public int getUserPostCount() {
+        try {
+            String sql = "SELECT * FROM users WHERE Post = ?";
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        }catch(SQLException e){
+            System.out.println("getPostCount failed: " + e.getMessage());
+        }
+        return 0;
     }
 
 }

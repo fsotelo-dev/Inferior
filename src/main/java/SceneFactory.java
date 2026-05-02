@@ -24,7 +24,8 @@ public class SceneFactory{
             case LOGIN -> buildLoginScene(stage, db);
             case SIGNUP -> buildSIGNUPScene(stage, db);
             case MAIN -> buildMAINScene(stage, db);
-//            case PROFILE -> buildProfilePage(stage);
+            case PROFILE -> buildProfilePage(stage, db);
+            case SETTINGS -> buildSettingPage(stage, db);
         };
     }
 //can be more efficient with Db singleton
@@ -36,6 +37,12 @@ public class SceneFactory{
         Label logWelcome = new Label("Log into Inferior");
         logWelcome.setStyle("-fx-font-size:20px; -fx-font-weight: bold;");
         logWelcome.setAlignment(Pos.CENTER_LEFT);
+
+        //FOR TESTING PURPOSES
+        Button test = new Button("Test");
+        test.setOnAction(e ->
+                stage.setScene(create(SceneType.MAIN, stage, db)));
+        test.setAlignment(Pos.TOP_LEFT);
 
         GridPane textLayout = new GridPane();
         TextField usernameField = new TextField();
@@ -56,7 +63,12 @@ public class SceneFactory{
 
             DatabaseFunction dbFunction = new DatabaseFunction(db.getConnection());
             boolean loggedIn = dbFunction.userLogin(username, password);
-
+            if(usernameField.getText().isEmpty()||passwordField.getText().isEmpty()){
+                loginStatus.setText("Please fill out all fields");
+                return;
+            }
+            db.insertItems(usernameField.getText(), passwordField.getText());
+            stage.setScene(create(SceneType.LOGIN, stage, db));
             if (loggedIn) {
                 stage.setScene((create(SceneType.MAIN, stage, db)));
             }else{
@@ -69,7 +81,7 @@ public class SceneFactory{
         textLayout.add(loginStatus, 0, 2);
         textLayout.setAlignment(Pos.CENTER);
 
-        VBox layout = new VBox(25, title, logWelcome, textLayout, loginbutton, signinButton);
+        VBox layout = new VBox(25, title, logWelcome, textLayout, loginbutton, signinButton, test);
         layout.setAlignment(Pos.CENTER);
 
         return new Scene(layout, 800, 600);
@@ -115,28 +127,29 @@ public class SceneFactory{
         layout.setAlignment(Pos.CENTER);
         return new Scene(layout, 800, 600);
     }
+    public static Scene buildProfilePage(Stage stage, DatabaseManager db){
+        Label title = new Label("Inferior");
+        title.setStyle("-fx-text-fill: red; -fx-font-size: 50px; -fx-font-weight: bold;");
+
+        Circle circle = new Circle(50);
+        circle.setFill(Color.WHITE);
 
 
-//    public static Scene buildProfilePage(Stage stage){
-//        Label title = new Label("Inferior");
-//        title.setStyle("-fx-text-fill: red; -fx-font-size: 50px; -fx-font-weight: bold;");
-//
-//        Circle circle = new Circle(50);
-//        circle.setFill(Color.WHITE);
-//
-//
-//        Rectangle box = new Rectangle(200, 100);
-//        box.setFill(Color.WHITE);
-//
-//        Button home = new Button("Home");
-//        home.setOnAction(e ->
-//                stage.setScene(create(SceneType.MAIN, stage)));
-//        home.setAlignment(Pos.BOTTOM_RIGHT);
-//
-//        VBox layout = new VBox(20, title, circle, box, home);
-//        layout.setAlignment(Pos.CENTER);
-//        return new Scene(layout, 800, 600);
-//    }
+        Rectangle box = new Rectangle(200, 100);
+        box.setFill(Color.WHITE);
+        DatabaseFunction dbFunction = new DatabaseFunction(db.getConnection());
+        Label Post = new Label("Post: "+dbFunction.getUserPostCount());
+
+
+        Button home = new Button("Home");
+        home.setOnAction(e ->
+                stage.setScene(create(SceneType.MAIN, stage, db)));
+        home.setAlignment(Pos.BOTTOM_RIGHT);
+
+        VBox layout = new VBox(20, title, circle, box, home,Post);
+        layout.setAlignment(Pos.CENTER);
+        return new Scene(layout, 800, 600);
+    }
     public static Scene buildMAINScene(Stage stage, DatabaseManager db) {
         Label title = new Label("Inferior");
         title.setStyle("-fx-text-fill: red; -fx-font-size: 50px; -fx-font-weight: bold;");
@@ -150,25 +163,29 @@ public class SceneFactory{
         sidebar.setStyle("-fx-background-color: #1a1a1a; -fx-border-color: #2a2a2a; -fx-border-width: 0 1 0 0;");
 
         // SideBar Buttons
-        Button homeBtn = new Button("🏠  Home");
+        Button homeBtn = new Button("⌂ Home");
         Button profileBtn = new Button("👤  Profile");
-        Button settingsBtn = new Button("⚙️   Settings");
-        Button logoutBtn = new Button("↩  Log Out");
+        Button settingsBtn = new Button("⚙   Settings");
+        Button logoutBtn = new Button("⏻ Log Out");
 
         //Buttons Funtionality
         homeBtn.setOnAction(e ->
-                stage.setScene(create(SceneType.SIGNUP, stage, db)));
-        homeBtn.setMaxWidth(Double.MAX_VALUE);
-//        profileBtn.setMaxWidth(Double.MAX_VALUE);
-//        profileBtn.setOnAction(e ->
-//                stage.setScene(create(SceneType.PROFILE, stage)));
-
-        settingsBtn.setMaxWidth(Double.MAX_VALUE);
+                stage.setScene(create(SceneType.LOGIN, stage, db)));
+        //homeBtn.setMaxWidth(Double.MAX_VALUE);
+        homeBtn.setAlignment(Pos.BASELINE_LEFT);
 
 
-        logoutBtn.setMaxWidth(Double.MAX_VALUE);
+        profileBtn.setOnAction(e ->
+                stage.setScene(create(SceneType.PROFILE, stage, db)));
+        profileBtn.setAlignment(Pos.BASELINE_LEFT);
+
+        settingsBtn.setOnAction(e->
+                stage.setScene(create(SceneType.SETTINGS, stage, db)));
+        settingsBtn.setAlignment(Pos.BASELINE_LEFT);
+
         logoutBtn.setOnAction(e ->
                 stage.close());
+        logoutBtn.setAlignment(Pos.BASELINE_LEFT);
 
         StackPane mainContent = new StackPane();
         mainContent.setStyle("-fx-background-color: #141414;");
@@ -179,6 +196,23 @@ public class SceneFactory{
         root.setCenter(mainContent);
 
         VBox layout = new VBox(25, title, homeBtn, profileBtn, settingsBtn, logoutBtn);
+        layout.setAlignment(Pos.CENTER);
+        return new Scene(layout, 800, 600);
+    }
+    public static Scene buildSettingPage(Stage stage, DatabaseManager db){
+        Label title = new Label("Inferior");
+        title.setStyle("-fx-text-fill: red; -fx-font-size: 50px; -fx-font-weight: bold;");
+
+        Rectangle box = new Rectangle(200, 100);
+        box.setFill(Color.WHITE);
+
+
+        Button home = new Button("Home");
+        home.setOnAction(e ->
+                stage.setScene(create(SceneType.MAIN, stage, db)));
+        home.setAlignment(Pos.BOTTOM_RIGHT);
+
+        VBox layout = new VBox(20, title, box, home);
         layout.setAlignment(Pos.CENTER);
         return new Scene(layout, 800, 600);
     }
