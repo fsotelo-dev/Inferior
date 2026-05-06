@@ -3,11 +3,15 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+
+import java.awt.*;
 
 /**
  * @author App
@@ -17,33 +21,49 @@ import javafx.stage.Stage;
 public class MainController {
 
     public Scene buildScene() {
-                Label title = new Label("Inferior");
-        title.setStyle("-fx-text-fill: red; -fx-font-size: 50px; -fx-font-weight: bold;");
+        Image fire = new Image(getClass().getResource("/ImagesInferior/logo.png").toExternalForm());
+        ImageView logo = new ImageView(fire);
+        logo.setFitWidth(100);
+        logo.setPreserveRatio(true);
 
-        HBox topBar = new HBox(title);
-        topBar.setStyle("-fx-background-color: #1a1a1a; -fx-border-color: #2a2a2a; -fx-border-width: 0 0 1 0;");
+        HBox topBar = new HBox(15, logo);
+        topBar.setAlignment(Pos.TOP_CENTER);  // pins logo to top
+        topBar.setStyle("-fx-padding: 10 20; " +
+                "-fx-border-color: #F35301; -fx-border-width: 0 0 1 0;");
 
-        Button homeBtn = new Button("🏠 Home");
+        WeatherService weatherService = new WeatherService();
+        Label weatherLabel = new Label();
+        weatherLabel.setStyle("-fx-text-fill: white");
+        weatherLabel.setText(weatherService.getWeather("Marina"));
+        VBox weatherBox = new VBox(5, weatherLabel);
+        weatherBox.setAlignment(Pos.TOP_LEFT);
+        weatherBox.setStyle("-fx-padding: 15;");
+
+        Button feedBtn = new Button("My Feed");
         Button profileBtn = new Button("👤 Profile");
         Button settingsBtn = new Button("⚙️ Settings");
         Button logoutBtn = new Button("⏻  Log Out");
-        for(Button btn: new Button[]{homeBtn, profileBtn, settingsBtn, logoutBtn}){
-            btn.setStyle("-fx-text-fill: black; " +
-                    "-fx-font-size: 14px; -fx-padding: 12 16;");
+        for(Button btn: new Button[]{feedBtn, profileBtn, settingsBtn, logoutBtn}){
+            btn.setStyle("-fx-text-fill: white;-fx-background-color: #1a1d24;" +
+                    "-fx-border-color: #F35301;-fx-font-size: 15px; -fx-padding: 15 45;" +
+                    "-fx-background-radius: 12;-fx-border-radius: 12");
         }
-        homeBtn.setOnAction(e -> SceneManager.getInstance().navigateTo(SceneType.LOGIN));
+
+        feedBtn.setOnAction(e -> SceneManager.getInstance().navigateTo(SceneType.POST));
         profileBtn.setOnAction(e -> SceneManager.getInstance().navigateTo(SceneType.PROFILE));
         settingsBtn.setOnAction(e -> SceneManager.getInstance().navigateTo(SceneType.SETTINGS));
-//        logoutBtn.setOnAction(e -> Platform.exit());
         logoutBtn.setOnAction(e -> SceneManager.getInstance().navigateTo(SceneType.LOGOUT));
 
-        StackPane mainContent =  new StackPane();
-        mainContent.setStyle("-fx-background-color: #141414;");
-        BorderPane root = new BorderPane();
+        VBox content = new VBox(25, weatherBox, feedBtn, profileBtn, settingsBtn, logoutBtn);
+        content.setAlignment(Pos.TOP_CENTER);
+        content.setStyle("-fx-padding: 20;");
 
-        root.setCenter(mainContent);
-        VBox layout =  new VBox(25, title, homeBtn, profileBtn, settingsBtn, logoutBtn);
-        layout.setAlignment(Pos.CENTER);
-        return new Scene(layout, 800, 600);
+        BorderPane root = new BorderPane();
+        root.setTop(topBar);     // logo + title sit here
+        root.setCenter(content);   // nav buttons
+        root.setStyle("-fx-background-color: #0f1115");
+
+        return new Scene(root, 800, 600);
     }
+
 }
