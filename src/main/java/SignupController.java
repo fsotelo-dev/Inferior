@@ -33,6 +33,7 @@ public class SignupController {
 
         Label incomeChoice = new Label("Income Range:");
         incomeChoice.setStyle("-fx-font-size: 14px;");
+        incomeChoice.setId("incomeChoice");
 
         ChoiceBox<String> incomeBox = new ChoiceBox<>();
         incomeBox.getItems().addAll("Low", "Middle", "High");
